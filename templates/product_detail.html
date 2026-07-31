@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="product-detail">
+
+    <div class="product-image">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    </div>
+
+    <div class="product-info">
+
+        <h1>{{ product.name }}</h1>
+
+        <h2>₹{{ product.price }}</h2>
+
+        <div class="product-extra">
+
+            <p>⭐ 4.8 / 5 ({{ reviews|length }} Reviews)</p>
+
+           {% if product.stock > 5 %}
+
+<p style="color:green;">
+    ✔ In Stock ({{ product.stock }} Available)
+</p>
+
+{% elif product.stock > 0 %}
+
+<p style="color:orange;">
+    ⚠ Only {{ product.stock }} Left
+</p>
+
+{% else %}
+
+<p style="color:red;font-weight:bold;">
+    ❌ Out of Stock
+</p>
+
+{% endif %}
+
+            <p>🚚 Free Delivery Across India</p>
+
+            <p>📦 Estimated Delivery: 3-5 Days</p>
+
+            <p>🔒 Secure Payment Available</p>
+
+        </div>
+
+        <p>{{ product.description }}</p>
+        <hr>
+
+<h3>Product Highlights</h3>
+
+<ul class="product-highlights">
+    <li>🎨 100% Handmade Mithila Artwork</li>
+    <li>🇮🇳 Made in Bihar, India</li>
+    <li>🚚 Free Shipping Across India</li>
+    <li>🔒 Secure Checkout</li>
+    <li>🎁 Perfect Gift Item</li>
+</ul>
+
+        <br>
+   {% if product.stock > 0 %}
+
+<a href="{% url 'add_to_cart' product.id %}">
+    <button class="cart-btn">
+        🛒 Add to Cart
+    </button>
+</a>
+
+<a href="{% url 'buy_now' product.id %}">
+    <button class="buy-btn">
+        ⚡ Buy Now
+    </button>
+</a>
+
+{% else %}
+
+<button class="cart-btn" disabled
+style="background:#999;cursor:not-allowed;">
+    ❌ Out of Stock
+</button>
+
+<button class="buy-btn" disabled
+style="background:#999;cursor:not-allowed;">
+    ❌ Buy Unavailable
+</button>
+
+{% endif %}
+
+<a href="{% url 'add_to_wishlist' product.id %}">
+    <button class="wishlist-btn">
+        ❤️ Wishlist
+    </button>
+</a>
+
+<a href="{% url 'home' %}">
+    <button class="back-btn">
+        ⬅ Back to Home
+    </button>
+</a>
+        <hr style="margin:50px 0;">
+
+        <h2>⭐ Write a Review</h2>
+
+        {% if user.is_authenticated %}
+
+        <form action="{% url 'add_review' product.id %}" method="POST" class="review-form">
+
+            {% csrf_token %}
+
+            <label><b>Rating</b></label>
+
+            <div class="star-rating">
+
+    <input type="radio" id="star5" name="rating" value="5" required>
+    <label for="star5">★</label>
+
+    <input type="radio" id="star4" name="rating" value="4">
+    <label for="star4">★</label>
+
+    <input type="radio" id="star3" name="rating" value="3">
+    <label for="star3">★</label>
+
+    <input type="radio" id="star2" name="rating" value="2">
+    <label for="star2">★</label>
+
+    <input type="radio" id="star1" name="rating" value="1">
+    <label for="star1">★</label>
+
+</div>
+            <textarea
+                name="review"
+                rows="5"
+                placeholder="Write your review..."
+                required>
+            </textarea>
+
+            <button type="submit">
+                Submit Review
+            </button>
+
+        </form>
+
+        {% else %}
+
+        <p>Please login to write a review.</p>
+
+        {% endif %}
+
+        <hr style="margin:50px 0;">
+
+        <h2>Customer Reviews</h2>
+
+        {% for review in reviews %}
+
+        <div class="review-card">
+
+            <h3>{{ review.user.username }}</h3>
+
+           <p style="color:#f39c12;font-size:18px;">
+    ⭐ {{ review.rating }}/5
+</p>
+
+<p>
+    <span style="color:green;font-weight:bold;">
+        ✔ Verified Purchase
+    </span>
+</p>
+
+<p>{{ review.review }}</p>
+
+<small>
+    {{ review.created_at|date:"d M Y • h:i A" }}
+</small>
+        </div>
+
+        {% empty %}
+
+        <div class="review-card">
+            <p>No reviews yet.</p>
+        </div>
+
+        {% endfor %}
+
+    <hr>
+
+<h2>Related Products</h2>
+
+<div class="related-products">
+
+{% for item in related_products %}
+
+<div class="related-card">
+
+<img src="{{ item.image.url }}" alt="{{ item.name }}">
+
+<h3>{{ item.name }}</h3>
+
+<p>₹{{ item.price }}</p>
+
+<a href="{% url 'product_detail' item.id %}">
+<button>View Product</button>
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+    </div>
+
+</div>
+
+{% endblock %}

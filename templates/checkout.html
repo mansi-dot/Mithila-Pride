@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Checkout
+{% endblock %}
+
+{% block content %}
+
+<div class="checkout-container">
+
+    <h1>Checkout</h1>
+
+    <form method="POST" id="checkout-form">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone Number</label>
+            <input type="text" name="phone" required>
+        </div>
+
+        <div class="form-group">
+            <label>Delivery Address</label>
+            <textarea name="address" rows="5" required></textarea>
+        </div>
+
+        <div class="cart-total">
+            <h2>Total Amount : ₹{{ total }}</h2>
+        </div>
+
+        <button type="submit" class="form-btn">
+            Continue To Payment
+        </button>
+
+    </form>
+
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+{% if razorpay_order_id %}
+
+<script>
+    var options = {
+
+    "key": "{{ razorpay_key }}",
+
+    "amount": "{{ amount }}",
+
+    "currency": "INR",
+
+    "name": "Mithila Pride",
+
+    "description": "Handmade Mithila Paintings",
+
+    "order_id": "{{ razorpay_order_id }}",
+
+    "prefill": {
+        "name": "{{ name }}",
+        "email": "{{ request.user.email }}",
+        "contact": "{{ phone }}"
+    },
+
+    "method": {
+        "upi": true,
+        "card": true,
+        "netbanking": true,
+        "wallet": true
+    },
+
+    "handler": function(response){
+
+        var form = document.createElement("form");
+
+        form.method = "POST";
+
+        form.action = "{% url 'payment_success' %}";
+
+        var csrf = document.createElement("input");
+        csrf.type = "hidden";
+        csrf.name = "csrfmiddlewaretoken";
+        csrf.value = "{{ csrf_token }}";
+        form.appendChild(csrf);
+
+        var payment = document.createElement("input");
+        payment.type = "hidden";
+        payment.name = "razorpay_payment_id";
+        payment.value = response.razorpay_payment_id;
+        form.appendChild(payment);
+
+        var order = document.createElement("input");
+        order.type = "hidden";
+        order.name = "razorpay_order_id";
+        order.value = response.razorpay_order_id;
+        form.appendChild(order);
+
+        var sign = document.createElement("input");
+        sign.type = "hidden";
+        sign.name = "razorpay_signature";
+        sign.value = response.razorpay_signature;
+        form.appendChild(sign);
+
+        document.body.appendChild(form);
+
+        form.submit();
+
+    },
+
+    "theme": {
+
+        "color": "#8B2E23"
+
+    }
+
+};
+
+var rzp = new Razorpay(options);
+
+rzp.open();
+
+</script>
+
+{% endif %}
+{% endblock %}

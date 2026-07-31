@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Wishlist
+{% endblock %}
+
+{% block content %}
+
+<section class="featured">
+
+    <h2>❤️ My Wishlist</h2>
+
+    {% if items %}
+
+    <div class="products">
+
+        {% for item in items %}
+
+        <div class="card">
+
+            <img src="{{ item.product.image.url }}"
+                 alt="{{ item.product.name }}">
+
+            <h3>{{ item.product.name }}</h3>
+
+            <p>₹{{ item.product.price }}</p>
+
+            <div class="product-buttons">
+
+                <a href="{% url 'product_detail' item.product.id %}">
+                    <button class="details-btn">
+                        👁 View Details
+                    </button>
+                </a>
+
+                <a href="{% url 'add_to_cart' item.product.id %}">
+                    <button class="cart-btn">
+                        🛒 Move To Cart
+                    </button>
+                </a>
+
+                <a href="{% url 'remove_wishlist' item.id %}">
+                    <button class="wishlist-btn">
+                        🗑 Remove
+                    </button>
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-box">
+
+        <h2>❤️ Your Wishlist is Empty</h2>
+
+        <p>
+            Explore beautiful Mithila paintings and add your favourite products to your wishlist.
+        </p>
+
+        <br>
+
+        <a href="{% url 'home' %}">
+            <button class="details-btn">
+                Continue Shopping
+            </button>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

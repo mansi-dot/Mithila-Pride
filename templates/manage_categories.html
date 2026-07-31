@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Categories
+{% endblock %}
+
+{% block content %}
+
+<div class="manage-products">
+
+    <h1>Manage Categories</h1>
+
+    <div style="text-align:right; margin-bottom:20px;">
+
+        <a href="{% url 'add_category' %}">
+            <button class="dashboard-btn">
+                ➕ Add Category
+            </button>
+        </a>
+
+    </div>
+
+    <table>
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+                <th>Image</th>
+                <th>Category Name</th>
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for category in categories %}
+
+            <tr>
+
+                <td>{{ category.id }}</td>
+
+                <td>
+
+                    <img src="{{ category.image.url }}"
+                         width="80"
+                         height="80"
+                         style="border-radius:10px;object-fit:cover;">
+
+                </td>
+
+                <td>{{ category.name }}</td>
+
+                <td>
+
+                    <a href="{% url 'edit_category' category.id %}">
+                        <button class="edit-btn">
+                            ✏️ Edit
+                        </button>
+                    </a>
+
+                    <a href="{% url 'delete_category' category.id %}"
+                       onclick="return confirm('Delete this category?');">
+
+                        <button class="delete-btn">
+                            🗑 Delete
+                        </button>
+
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td colspan="4">
+                    No Categories Available
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

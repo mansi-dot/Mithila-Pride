@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ category.name }}
+{% endblock %}
+
+{% block content %}
+
+<section class="featured">
+
+    <h2>{{ category.name }}</h2>
+
+    {% if products %}
+
+    <div class="products">
+
+        {% for product in products %}
+
+        <div class="card">
+
+            <img src="{{ product.image.url }}"
+                 alt="{{ product.name }}">
+
+            <h3>{{ product.name }}</h3>
+
+            <p>₹{{ product.price }}</p>
+
+            <div class="product-buttons">
+
+                <a href="{% url 'product_detail' product.id %}">
+                    <button class="details-btn">
+                        👁 View Details
+                    </button>
+                </a>
+
+                <a href="{% url 'add_to_cart' product.id %}">
+                    <button class="cart-btn">
+                        🛒 Add To Cart
+                    </button>
+                </a>
+
+                <a href="{% url 'add_to_wishlist' product.id %}">
+                    <button class="wishlist-btn">
+                        ❤️ Add To Wishlist
+                    </button>
+                </a>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-box">
+
+        <h2>No Products Found</h2>
+
+        <p>
+            There are currently no products available in this category.
+        </p>
+
+        <br>
+
+        <a href="{% url 'home' %}">
+            <button class="details-btn">
+                ← Back to Home
+            </button>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+{% endblock %}

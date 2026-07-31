@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-container">
+
+    <h1>👤 My Profile</h1>
+
+    <div class="profile-card">
+
+        <p><b>Username:</b> {{ request.user.username }}</p>
+
+        <p><b>Email:</b> {{ request.user.email }}</p>
+
+        <p><b>First Name:</b> {{ request.user.first_name|default:"Not Added" }}</p>
+
+        <p><b>Last Name:</b> {{ request.user.last_name|default:"Not Added" }}</p>
+
+        <br>
+
+        <a href="{% url 'my_orders' %}">
+            <button class="profile-btn">
+                📦 My Orders
+            </button>
+        </a>
+
+        <a href="{% url 'wishlist' %}">
+            <button class="profile-btn">
+                ❤️ Wishlist
+            </button>
+        </a>
+
+        <a href="{% url 'logout' %}">
+            <button class="logout-btn">
+                🚪 Logout
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

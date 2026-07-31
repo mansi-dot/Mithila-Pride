@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Seller Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <h1>Seller Dashboard</h1>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+            <h2>📦 Products</h2>
+            <h1>{{ products }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>🛒 Orders</h2>
+            <h1>{{ orders }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>👥 Users</h2>
+            <h1>{{ users }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>⭐ Reviews</h2>
+            <h1>{{ reviews }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>❤️ Wishlist</h2>
+            <h1>{{ wishlist }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>💰 Revenue</h2>
+            <h1>₹{{ revenue }}</h1>
+        </div>
+
+    </div>
+
+    <hr style="margin:60px 0;">
+
+   <h2 style="text-align:center;color:#7B2D26;">
+     Recent Orders
+    </h2>
+
+    <table class="dashboard-table">
+
+<tr>
+<th>ID</th>
+<th>Customer</th>
+<th>Status</th>
+<th>Total</th>
+</tr>
+
+{% for order in recent_orders %}
+
+<tr>
+<td>#{{ order.id }}</td>
+<td>{{ order.full_name }}</td>
+<td>{{ order.status }}</td>
+<td>₹{{ order.total_amount }}</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4">
+No Orders Yet
+</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+    <div style="margin-top:60px; text-align:center;">
+
+        <!-- Add Product -->
+        <a href="{% url 'add_product' %}">
+            <button class="dashboard-btn">
+                ➕ Add Product
+            </button>
+        </a>
+
+        <!-- Manage Products -->
+        <a href="{% url 'manage_products' %}">
+            <button class="dashboard-btn">
+                📦 Manage Products
+            </button>
+        </a>
+
+        <!-- Manage Orders -->
+        <a href="{% url 'manage_orders' %}">
+            <button class="dashboard-btn">
+                📋 Manage Orders
+            </button>
+        </a>
+
+        <!-- Manage Categories -->
+        <a href="{% url 'manage_categories' %}">
+            <button class="dashboard-btn">
+                🏷️ Manage Categories
+            </button>
+        </a>
+
+        <!-- Sales Analytics -->
+        <a href="{% url 'analytics' %}">
+            <button class="dashboard-btn">
+                📊 Sales Analytics
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas
+    id="salesChart"
+    width="400"
+    height="150"
+    style="margin-top:50px;">
+</canvas>
+
+<script>
+
+const ctx = document.getElementById('salesChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+            'Products',
+            'Orders',
+            'Users',
+            'Reviews',
+            'Wishlist'
+        ],
+
+        datasets: [{
+
+            label: 'Store Analytics',
+
+            data: [
+
+                {{ products }},
+
+                {{ orders }},
+
+                {{ users }},
+
+                {{ reviews }},
+
+                {{ wishlist }}
+
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

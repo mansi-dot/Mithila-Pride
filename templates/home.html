@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+
+<section class="hero" id="home">
+
+    <div class="hero-left">
+
+        <h1>Discover the Beauty of Mithila Paintings</h1>
+
+        <p>
+            Explore authentic handmade Madhubani paintings created by talented Indian artists.
+        </p>
+
+        <a href="#products">
+            <button>Shop Now</button>
+        </a>
+
+    </div>
+
+    <div class="hero-right">
+
+        <img src="{% static 'images/mithila.jpg' %}" alt="Mithila Painting">
+
+    </div>
+
+</section>
+
+<!-- ================= About section ================= -->
+<section id="about" class="about-section">
+
+    <h2>About Mithila Pride</h2>
+
+    <p>
+        Mithila Pride is an online marketplace dedicated to promoting authentic handmade Mithila (Madhubani) paintings and handcrafted products created by talented artisans from Bihar. Our mission is to preserve India's rich cultural heritage while empowering local artists through digital commerce.
+    </p>
+
+</section>
+<!-- ================= CATEGORIES ================= -->
+
+<section id="categories" class="categories">
+
+    <h2>Shop by Categories</h2>
+
+    <div class="category-container">
+
+        {% for category in categories %}
+
+        <a href="{% url 'category_products' category.id %}">
+
+            <div class="category-card">
+
+                <img src="{{ category.image.url }}" alt="{{ category.name }}">
+
+                <h3>{{ category.name }}</h3>
+
+            </div>
+
+        </a>
+
+        {% empty %}
+
+        <h3>No Categories Available</h3>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- ================= PRODUCTS ================= -->
+
+<section class="featured" id="products">
+
+    <h2>Featured Products</h2>
+
+    <div class="products">
+
+        {% for product in products %}
+
+        <div class="card">
+
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+
+            <h3>{{ product.name }}</h3>
+
+            <p><b>₹{{ product.price }}</b></p>
+
+            <div class="product-buttons">
+
+    <a href="{% url 'product_detail' product.id %}">
+        <button class="details-btn">
+            👁 View Details
+        </button>
+    </a>
+
+    <a href="{% url 'add_to_cart' product.id %}">
+        <button class="cart-btn">
+            🛒 Add To Cart
+        </button>
+    </a>
+
+    <a href="{% url 'add_to_wishlist' product.id %}">
+        <button class="wishlist-btn">
+            ❤️ Wishlist
+        </button>
+    </a>
+
+</div>
+           
+        </div>
+
+       {% empty %}
+
+<h2 class="no-products">
+
+No Products Available
+
+</h2>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+<!-- ================= PAGINATION ================= -->
+
+<div class="pagination">
+
+    {% if products.has_previous %}
+
+    <a href="?page=1">
+
+        ⏮ First
+
+    </a>
+
+    <a href="?page={{ products.previous_page_number }}">
+
+        ◀ Previous
+
+    </a>
+
+    {% endif %}
+
+    <span>
+
+        Page {{ products.number }}
+
+        of
+
+        {{ products.paginator.num_pages }}
+
+    </span>
+
+    {% if products.has_next %}
+
+    <a href="?page={{ products.next_page_number }}">
+
+        Next ▶
+
+    </a>
+
+    <a href="?page={{ products.paginator.num_pages }}">
+
+        Last ⏭
+
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+

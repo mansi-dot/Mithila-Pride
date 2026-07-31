@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Product
+{% endblock %}
+
+{% block content %}
+
+<div class="add-product-container">
+
+    <h1>Edit Product</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="save-btn">
+            Update Product
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

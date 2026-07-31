@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Add Category
+{% endblock %}
+
+{% block content %}
+
+<div class="add-product-container">
+
+    <h1>Add Category</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button class="save-btn" type="submit">
+
+            Save Category
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

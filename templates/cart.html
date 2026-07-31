@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Shopping Cart
+{% endblock %}
+
+{% block content %}
+
+<div class="cart-container">
+
+    <h1>🛒 Shopping Cart</h1>
+
+    {% if cart_items %}
+
+    <table class="cart-table">
+
+        <thead>
+
+            <tr>
+
+                <th>Image</th>
+
+                <th>Product</th>
+
+                <th>Price</th>
+
+                <th>Quantity</th>
+
+                <th>Subtotal</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for item in cart_items %}
+
+            <tr>
+
+                <td>
+
+                    <a href="{% url 'product_detail' item.product.id %}">
+    <img src="{{ item.product.image.url }}"
+         alt="{{ item.product.name }}">
+</a>
+
+                </td>
+
+                <td>
+
+                    <a href="{% url 'product_detail' item.product.id %}"
+   class="cart-product-link">
+
+    <strong>{{ item.product.name }}</strong>
+
+</a>
+
+                </td>
+
+                <td>
+
+                    ₹{{ item.product.price }}
+
+                </td>
+
+                <td>
+
+                    <a href="{% url 'decrease_quantity' item.id %}">
+                        <button class="details-btn">−</button>
+                    </a>
+
+                    <strong style="margin:0 10px;">
+                        {{ item.quantity }}
+                    </strong>
+
+                    <a href="{% url 'increase_quantity' item.id %}">
+                        <button class="details-btn">+</button>
+                    </a>
+
+                </td>
+
+                <td>
+
+                    ₹{% widthratio item.product.price 1 item.quantity %}
+
+                </td>
+
+                <td>
+
+                    <a href="{% url 'remove_from_cart' item.id %}">
+                        <button class="wishlist-btn">
+                            Remove
+                        </button>
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+    <div class="cart-total">
+
+        <h2>
+
+            Grand Total : ₹{{ total }}
+
+        </h2>
+
+        <a href="{% url 'checkout' %}">
+
+            <button class="checkout-btn">
+
+                Proceed to Checkout
+
+            </button>
+
+        </a>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-box">
+
+        <h2>Your Cart is Empty</h2>
+
+        <p>Add beautiful Mithila products to your cart.</p>
+
+        <a href="{% url 'home' %}">
+            <button class="details-btn">
+                Continue Shopping
+            </button>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sales Analytics
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard">
+
+    <h1>📊 Sales Analytics</h1>
+
+    <div class="dashboard-grid">
+
+        <div class="dashboard-card">
+            <h2>📦 Total Products</h2>
+            <h1>{{ products }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>🛒 Total Orders</h2>
+            <h1>{{ orders }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>👥 Total Users</h2>
+            <h1>{{ users }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>⭐ Reviews</h2>
+            <h1>{{ reviews }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>❤️ Wishlist</h2>
+            <h1>{{ wishlist }}</h1>
+        </div>
+
+        <div class="dashboard-card">
+            <h2>💰 Total Revenue</h2>
+            <h1>₹{{ revenue }}</h1>
+        </div>
+
+    </div>
+
+    <div style="margin-top:40px;text-align:center;">
+
+        <a href="{% url 'dashboard' %}">
+            <button class="dashboard-btn">
+                ← Back to Dashboard
+            </button>
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

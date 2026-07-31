@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Manage Orders
+{% endblock %}
+
+{% block content %}
+
+<div class="manage-products">
+
+<h1>Manage Orders</h1>
+
+<table>
+
+<tr>
+    <th>ID</th>
+    <th>Customer</th>
+    <th>Phone</th>
+    <th>Total</th>
+    <th>Status</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+{% for order in orders %}
+
+<tr>
+
+<td>#{{ order.id }}</td>
+
+<td>{{ order.full_name }}</td>
+
+<td>{{ order.phone }}</td>
+
+<td>₹{{ order.total_amount }}</td>
+
+<td>
+    <span class="status {{ order.status|lower }}">
+        {{ order.status }}
+    </span>
+</td>
+
+<td>{{ order.created_at|date:"d M Y" }}</td>
+
+<td>
+   <a href="{% url 'update_order_status' order.id 'Processing' %}">
+    <button class="action-btn processing-btn">
+        Processing
+    </button>
+</a>
+
+<a href="{% url 'update_order_status' order.id 'Shipped' %}">
+    <button class="action-btn shipped-btn">
+        Shipped
+    </button>
+</a>
+<a href="{% url 'update_order_status' order.id 'Out for Delivery' %}">
+    <button class="action-btn out-btn">
+        Out for Delivery
+    </button>
+</a>
+<a href="{% url 'update_order_status' order.id 'Delivered' %}">
+    <button class="action-btn delivered-btn">
+        Delivered
+    </button>
+</a>
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="7">
+No Orders
+</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+{% endblock %}
