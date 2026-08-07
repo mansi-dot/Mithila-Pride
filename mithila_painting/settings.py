@@ -7,8 +7,7 @@ SECRET_KEY = os.getenv(
     "django-insecure-r$l*s+*t85&532phxr2dh6sao*yf-tc%n9!ud*y3*&_i4t%@#2"
 )
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
-
+DEBUG = True
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
 
 INSTALLED_APPS = [
@@ -98,6 +97,9 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
